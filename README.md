@@ -36,8 +36,7 @@ This project uses a heuristic algorithm to solve this problem. The proposed algo
 
 The hackathon was a great learning opportunity to get familiar with cloud-based development. Since we were free to choose our dataset, a considerable effort put into ensuring our synthetic data was sufficiently realistic. Apart from that, we experimented with multiple existing approaches to VRP, including genetic algorithms and recursive-DBSCAN. However, we found our strategy to be most performant when scaled industrial level. One of the primary reasons is the relative simplicity and the speed of execution, which allows much-needed flexibility. 
 
-(Facing issues with the internet. Will add before Apr 2)
 
-**Tentative Demo Link:** http://sic.ftp.sh:17001
+**Tentative Demo Link:** http://routero,herokuapp.com
 
-**WIP Presentation Link:** https://1drv.ms/p/s!AlbLbaPx_OoCnAC3pbRIdt6unRrF?e=Z2dhSu
+**Presentation Link:** https://1drv.ms/p/s!AlbLbaPx_OoCnAC3pbRIdt6unRrF?e=Z2dhSu
