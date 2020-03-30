@@ -230,13 +230,14 @@ def overview():
 
 @st.cache
 def getdf():
-    return [pd.read_json(x) for  x in ['destdf.json', 'srcdf.json','fulldf.json']]
+    df = pd.read_json('srcdf.json')
+    df['icon_data'] = None
+    for i in df.index:
+        df['icon_data'][i] = icon_data
+    return [pd.read_json(x) for  x in ['destdf.json','fulldf.json']] + [df]
 
 if __name__ == "__main__":
-    dfd, dfs, df0 = getdf()
-    dfs['icon_data'] = None
-    for i in dfs.index:
-        dfs['icon_data'][i] = icon_data
+    dfd, df0, dfs = getdf()
 
     '''
 # Routero
@@ -260,6 +261,8 @@ This project uses a heuristic algorithm to solve this problem. The proposed algo
 * Phase 2: Do preliminary analysis on the points for determining the type and number of the vehicles for given constraints.
 * Phase 3: Assign the vehicle to the subsets of the destination points using K-means while minimizing the fuel cost.
 * Phase 4: Optimize the routing for the alloted locations using _Travelling Salesman_ optimization) for each vehicle.
+
+Detailed analysis of the implementation can be found in the `prototype.ipynb` present in the project repository.
 
 ### Routing demo
 '''
@@ -287,8 +290,8 @@ This project uses a heuristic algorithm to solve this problem. The proposed algo
     '''
     The hackathon was a great learning opportunity to get familiar with cloud-based development. Since we were free to choose our dataset, a considerable effort put into ensuring our synthetic data was sufficiently realistic. Apart from that, we experimented with multiple existing approaches to VRP, including genetic algorithms and recursive-DBSCAN. However, we found our strategy to be most performant when scaled to large data. One of the primary reasons is the relative simplicity and the speed of execution, which allows much-needed flexibility. 
 ### Team Members
-* Tejasvi S Tomar [http://github.com/tejasvi](@tejasvi)
-* Pooja Dhane [http://github.com/poojadh](@poojaDh)
+* Tejasvi S Tomar [@tejasvi](http://github.com/tejasvi)
+* Pooja Dhane [@poojaDh](http://github.com/poojadh)
 
 ### Data used
 Synthetic data based on [The heterogeneous fleet vehicle routing problem with overloads and time windows]( https://www.sciencedirect.com/science/article/pii/S0925527313000388) after heavy modification according to the given specifications.
