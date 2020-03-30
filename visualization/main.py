@@ -257,10 +257,10 @@ In the interactive map above, the locations of sources (pins) and destinations (
 
 This project uses a heuristic algorithm to solve this problem. The proposed algorithm consists of four phases:
 
-* Phase 1: Finds the destination nodes which will be catered by each source node using a modified k-means clustering algorithm.
+* Phase 1: Find the destination nodes which will be catered by each source node using a modified k-means clustering algorithm.
 * Phase 2: Do preliminary analysis on the points for determining the type and number of the vehicles for given constraints.
 * Phase 3: Assign the vehicle to the subsets of the destination points using K-means while minimizing the fuel cost.
-* Phase 4: Optimize the routing for the alloted locations using _Travelling Salesman_ optimization) for each vehicle.
+* Phase 4: Optimize the routing for the allotted locations using _Travelling Salesman_ optimization) for each vehicle.
 
 Detailed analysis of the implementation can be found in the `prototype.ipynb` present in the project repository.
 
@@ -269,7 +269,7 @@ Detailed analysis of the implementation can be found in the `prototype.ipynb` pr
     dtype = st.radio("", ('Single vehicle', 'Full demo'), index=0)
     if dtype=='Single vehicle':
         src = st.selectbox(
-                'Choose source depot ID',range(10),index=1)
+                'Choose source depot ID',range(10),index=4)
         srcdf0 = df0.loc[df0['src'] == src]
         ntype = srcdf0['type'].nunique()
         tp = st.selectbox(
