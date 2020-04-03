@@ -27,10 +27,10 @@ Given the locations of sources and destinations, the MDVRP requires the assignme
 
 This project uses a heuristic algorithm to solve this problem. The proposed algorithm consists of two phases:
 
-* Phase 1: Finds the centroids which will be delivered by each vehicle by using a modified k-means clustering algorithm.
-* Phase 2: Choose the destinations for each centroid (i.e., source points)
-* Phase 3: Assign the vehicle to the subsets of the destination points using K-means
-* Phase 4: Optimize the vehicle routing (Using _Travelling Salesman_ optimization)
+* Phase 1: Find the destination nodes which will be catered by each source node using a modified k-means clustering algorithm.
+* Phase 2: Do preliminary analysis on the points for determining the type and number of the vehicles for given constraints.
+* Phase 3: Assign the vehicle to the subsets of the destination points using K-means while minimizing the fuel cost.
+* Phase 4: Optimize the routing for the allotted locations using _Travelling Salesman_ optimization) for each vehicle.
 
 ## 🔦 Other highlights
 
