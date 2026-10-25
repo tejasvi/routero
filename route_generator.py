@@ -1,11 +1,16 @@
 # Data in thedf, destdf, srcdf
 # Map API uses (lat,lon) and PyDeck uses (lon, lat)
 
+import os
 import numpy as np
 from sklearn.cluster import KMeans
 import pandas as pd
 import requests
 np.random.seed(seed=1)
+
+# Azure Maps key, e.g. AZURE_MAPS_KEY=... python route_generator.py
+subscriptionKey = os.environ["AZURE_MAPS_KEY"]
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "visualization")
 
 thresh = 0.4
 vthresh = 1
@@ -34,9 +39,9 @@ src = np.column_stack([x, y])
 
 def stack(x, i=15):
     if i == 0:
-        return np.row_stack([x, x])
+        return np.vstack([x, x])
     else:
-        return np.row_stack([stack(x, i - 1), stack(x, i - 1)])
+        return np.vstack([stack(x, i - 1), stack(x, i - 1)])
 
 
 
@@ -48,18 +53,18 @@ def trans(labels, cluster):
 
 
 
-ndest = np.row_stack([dest, stack(src)])
+ndest = np.vstack([dest, stack(src)])
 
-kmeans = KMeans(n_clusters=src.shape[0], random_state=0).fit(ndest)
+kmeans = KMeans(n_clusters=src.shape[0], random_state=0, n_init=10).fit(ndest)
 labels = kmeans.labels_[:1000]
 
 labels = trans(labels, list(kmeans.predict(src)))
 
 dsrc = np.column_stack([dest, labels])
-dsource = np.array([
+dsource = [
     np.column_stack([dsrc[dsrc[:, 2] == i, 0], dsrc[dsrc[:, 2] == i, 1]])
     for i in range(src.shape[0])
-])
+]
 
 
 
@@ -97,8 +102,6 @@ def getlist(points, n, mode="proto"):
 
 def getroute(query, routeRepr="summaryOnly"):
 
-    subscriptionKey = "3S9d9XPp-wT2oH-8yDBeVAknA5s2ykqPFCmTWANPgN8"
-
     #Get boundaries for the electric vehicle's reachable range.
     resp = requests.get(
         "https://atlas.microsoft.com/route/directions/json?subscription-key={}&api-version=1.0&query={}&routeType=shortest&computeBestOrder=true&travelMode=car&routeRepresentation={}"
@@ -124,9 +127,9 @@ def cluster(points):
         k = int(k)
 
         if k > 0:
-            npoints = np.row_stack([points[i], stack(src[i])])
+            npoints = np.vstack([points[i], stack(src[i])])
             size = points[i].shape[0]
-            kmeans = KMeans(n_clusters=k, random_state=0).fit(npoints)
+            kmeans = KMeans(n_clusters=k, random_state=0, n_init=10).fit(npoints)
             srclabel = kmeans.labels_[size]
             lab = kmeans.labels_[:size]
 
@@ -212,7 +215,7 @@ fulldffar = maindf(farpaths)
 fulldf = pd.concat([fulldfnear.assign(type=0), fulldffar.assign(type=1)])
 fulldf.reset_index(drop=True, inplace=True)
 
-fulldf.to_json("./fulldf.json")
+fulldf.to_json(os.path.join(out, "fulldf.json"))
 destdf = pd.DataFrame({
     "labels": labels.tolist(),
     "coordinates": dest.T[[1, 0]].T.tolist()
@@ -223,5 +226,5 @@ srcdf = pd.DataFrame({
 })
 
 
-destdf.to_json("./destdf.json")
-srcdf.to_json("./srcdf.json")
+destdf.to_json(os.path.join(out, "destdf.json"))
+srcdf.to_json(os.path.join(out, "srcdf.json"))
